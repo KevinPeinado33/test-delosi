@@ -6,27 +6,13 @@
   padding: 5rem;
 }
 
+.square__title {
+  margin-bottom: 35px;
+}
+
 .square__container {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
-  align-items: center;
-}
-
-.square__content {
-  display: grid;
-  // grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  max-width: 200px;
-  margin: 0 auto;
-}
-
-.square__footer {
-  display: flex;
-  margin-top: 20px;
-  flex-direction: row;
-  justify-content: center;
-  width: 100%;
-  gap: 50px;
 }

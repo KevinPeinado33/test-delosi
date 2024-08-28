@@ -1,4 +1,5 @@
 import { FC } from 'react';
+
 import styles from './SquareInput.module.scss';
 
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> { }
