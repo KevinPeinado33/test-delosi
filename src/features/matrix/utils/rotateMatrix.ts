@@ -1,14 +1,10 @@
+import { fillMatrix } from './general';
+
 export const rotateMatrix = (matrixIn: string[][]) => {
     
     const matrixLength = matrixIn.length;
 
-    const rotatedMatrix = Array
-        .from(
-            { 
-                length: matrixLength 
-            }, 
-            () => Array( matrixLength ).fill('')
-        );
+    const rotatedMatrix = fillMatrix(matrixLength);
     
     for (let row = 0; row < matrixLength; row++) {
         for (let col = 0; col < matrixLength; col++) {

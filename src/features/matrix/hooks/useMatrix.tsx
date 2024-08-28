@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { rotateMatrix } from '../utils';
+import { fillMatrix, rotateMatrix } from '../utils';
 
 export const useMatrix = ( initialSize: number ) => {
 
@@ -19,7 +19,7 @@ export const useMatrix = ( initialSize: number ) => {
   
     const handleResetFields = () => {
       setMatrixSize(initialSize);
-      setMatrixValues(Array.from({ length: initialSize }, () => Array( initialSize ).fill('')));
+      setMatrixValues(fillMatrix(initialSize));
     };
   
     const handleInputChange = (rowIndex: number, colIndex: number, value: string) => {
