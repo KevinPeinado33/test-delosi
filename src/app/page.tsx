@@ -1,95 +1,104 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
+import { useState } from 'react';
+
+import { SquareInput } from '@/shared/components/atoms/inputs';
+import { BasicButton } from '@/shared/components/atoms/buttons';
+
+import styles from './page.module.scss';
 
 export default function Home() {
+
+  const [matrixSize, setMatrixSize] = useState(2);
+  const [matrixValues, setMatrixValues] = useState<string[][]>(
+    Array.from({ length: matrixSize }, () => Array(matrixSize).fill(''))
+  );
+
+  const handleAddFields = () => {
+    setMatrixSize((prevSize) => prevSize + 1);
+    setMatrixValues((prevValues) => [
+      ...prevValues.map((row) => [...row, '']),
+      Array(prevValues.length + 1).fill(''),
+    ]);
+  };
+
+  const handleResetFields = () => {
+    setMatrixSize(2);
+    setMatrixValues(Array.from({ length: 2 }, () => Array(2).fill('')));
+  };
+
+  const handleInputChange = (rowIndex: number, colIndex: number, value: string) => {
+    setMatrixValues((prevValues) => {
+      const newValues = [...prevValues];
+      newValues[rowIndex][colIndex] = value;
+      return newValues;
+    });
+  };
+
+  const rotateMatrix = (matrix: string[][]) => {
+    const n = matrix.length;
+    const rotatedMatrix = Array.from({ length: n }, () => Array(n).fill(''));
+    for (let row = 0; row < n; row++) {
+      for (let col = 0; col < n; col++) {
+        rotatedMatrix[n - col - 1][row] = matrix[row][col];
+      }
+    }
+    return rotatedMatrix;
+  };
+
+  const rotatedMatrix = rotateMatrix(matrixValues);
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <main className={styles.square}>
+
+      <h1>Girar matriz 90° en sentido anti horario</h1>
+
+      <div className={styles.square__container}>
+
+        <div
+          className={styles.square__content}
+          style={{
+            gridTemplateColumns: `repeat(${matrixSize}, 1fr)`,
+            gridTemplateRows: `repeat(${matrixSize}, 1fr)`
+          }}
+        >
+          {matrixValues.map((row, rowIndex) =>
+            row.map((value, colIndex) => (
+              <SquareInput
+                key={`${rowIndex}-${colIndex}`}
+                aria-label={`Input ${rowIndex * matrixSize + colIndex + 1}`}
+                value={value}
+                onChange={(e) => handleInputChange(rowIndex, colIndex, e.target.value)}
+              />
+            ))
+          )}
         </div>
+
+        <div
+          className={styles.square__content}
+          style={{
+            gridTemplateColumns: `repeat(${matrixSize}, 1fr)`,
+            gridTemplateRows: `repeat(${matrixSize}, 1fr)`
+          }}
+        >
+          {rotatedMatrix.map((row, rowIndex) =>
+            row.map((value, colIndex) => (
+              <SquareInput
+                key={`rotated-${rowIndex}-${colIndex}`}
+                aria-label={`Input transformed ${rowIndex * matrixSize + colIndex + 1}`}
+                value={value}
+                disabled
+              />
+            ))
+          )}
+        </div>
+
       </div>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
+      <div className={styles.square__footer}>
+        <BasicButton value='Agregar campos' onClick={handleAddFields} />
+        <BasicButton value='Restaurar' variant='secondary' onClick={handleResetFields} />
       </div>
 
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
     </main>
   );
 }
