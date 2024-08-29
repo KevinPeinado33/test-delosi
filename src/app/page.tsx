@@ -1,5 +1,4 @@
 "use client";
-
 import { MatrixControls, SquareGrid, useMatrix } from '@/features/matrix';
 
 import styles from './page.module.scss';
@@ -13,7 +12,7 @@ export default function Home() {
     matrixSize,
     handleInputChange,
     rotatedMatrix,
-  } = useMatrix( 3 );
+  } = useMatrix( 2 );
   
   return (
     <main className={styles.square}>

@@ -5,9 +5,7 @@ import { fillMatrix, rotateMatrix } from '../utils';
 export const useMatrix = ( initialSize: number ) => {
 
     const [matrixSize, setMatrixSize] = useState( initialSize );
-    const [matrixValues, setMatrixValues] = useState< string[][] >(
-      Array.from({ length: matrixSize }, () => Array( matrixSize ).fill(''))
-    );
+    const [matrixValues, setMatrixValues] = useState< string[][] >(fillMatrix(matrixSize));
   
     const handleAddFields = () => {
       setMatrixSize(( prevSize ) => prevSize + 1);
