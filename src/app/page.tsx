@@ -2,6 +2,7 @@
 import { MatrixControls, SquareGrid, useMatrix } from '@/features/matrix';
 
 import styles from './page.module.scss';
+import { ErrorLine } from '@/shared/components/atoms/messages';
 
 export default function Home() {
 
@@ -12,6 +13,7 @@ export default function Home() {
     matrixSize,
     handleInputChange,
     rotatedMatrix,
+    error
   } = useMatrix( 2 );
   
   return (
@@ -33,6 +35,8 @@ export default function Home() {
           onInputChange={handleInputChange}
         />
 
+        { error && <ErrorLine message={error} /> }
+        
         <SquareGrid
           matrix={rotatedMatrix}
           matrixSize={matrixSize}
